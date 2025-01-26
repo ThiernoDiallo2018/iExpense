@@ -7,35 +7,32 @@
 
 import SwiftUI
 
-struct SecondView: View {
-    //let name: String // pass this in to make it more dynamic
-    
-    @Environment(\.dismiss) var dismiss
-    
-    var body: some View {
-        VStack{
-            Text("Thierno")
-            //Text("\(name)")
-            Button("Dismiss") {
-                dismiss()
-            }
-        }
-        
-    }
+struct ExpenseItems {
+    let name: String
+    let type: String
+    let amount: Double
 }
 
+@Observable
+class Expenses {
+    var item = [ExpenseItems]()
+}
+
+
 struct ContentView: View {
-    @State private var showingSheet = false
+    
+    @State private var expenses = Expenses()
+    
     var body: some View {
-        VStack {
-            Button("Show Sheet") {
-                showingSheet.toggle()
+        NavigationStack {
+            List{
+                ForEach(expenses.item, id: \.name) { item in
+                    Text(item.name)
+                }
             }
-            .sheet(isPresented: $showingSheet) {
-                SecondView()
-            }
+            .navigationTitle("iExpense")
+            
         }
-        .padding()
     }
 }
 
